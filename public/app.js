@@ -112,7 +112,13 @@ const API = {
       const appointments = getData(DB.appointments);
       const index = appointments.findIndex(a => a._id === id);
       if (index !== -1) {
-        appointments[index] = { ...appointments[index], ...data, updatedAt: new Date().toISOString() };
+        const currentEditCount = appointments[index].editCount || 0;
+        appointments[index] = { 
+          ...appointments[index], 
+          ...data, 
+          editCount: currentEditCount + 1,
+          updatedAt: new Date().toISOString() 
+        };
         setData(DB.appointments, appointments);
         return appointments[index];
       }
@@ -657,12 +663,14 @@ function loadStatistics() {
         completed: 0,
         cancelled: 0,
         noShow: 0,
+        edits: apt.editCount || 0,
         dates: []
       };
     }
     clientStats[clientId].appointments++;
     clientStats[clientId].revenue += (apt.price - apt.discount);
     clientStats[clientId].dates.push(new Date(apt.date));
+    clientStats[clientId].edits += (apt.editCount || 0);
     if (apt.status === 'completed') clientStats[clientId].completed++;
     if (apt.status === 'cancelled') clientStats[clientId].cancelled++;
     if (apt.status === 'no-show') clientStats[clientId].noShow++;
@@ -708,6 +716,72 @@ function loadStatistics() {
       <span class="value">${c.stability.toFixed(0)}% completed</span>
     </div>
   `).join('') || '<p>Need at least 2 appointments to calculate stability</p>';
+
+  const cancellationLeaders = Object.values(clientStats)
+    .filter(c => c.cancelled > 0)
+    .map(c => ({
+      ...c,
+      cancelRate: c.appointments > 0 ? (c.cancelled / c.appointments) * 100 : 0
+    }))
+    .sort((a, b) => b.cancelRate - a.cancelRate)
+    .slice(0, 5);
+  
+  document.getElementById('statCancellationLeaders').innerHTML = cancellationLeaders.length > 0
+    ? cancellationLeaders.map((c, i) => `
+        <div class="stat-item">
+          <span class="rank">#${i + 1}</span>
+          <span class="name">${c.name}</span>
+          <span class="value warning">${c.cancelled} (${c.cancelRate.toFixed(0)}%)</span>
+        </div>
+      `).join('')
+    : '<p>No cancellations recorded</p>';
+
+  const editLeaders = Object.values(clientStats)
+    .filter(c => c.edits > 0)
+    .sort((a, b) => b.edits - a.edits)
+    .slice(0, 5);
+  
+  document.getElementById('statEditLeaders').innerHTML = editLeaders.length > 0
+    ? editLeaders.map((c, i) => `
+        <div class="stat-item">
+          <span class="rank">#${i + 1}</span>
+          <span class="name">${c.name}</span>
+          <span class="value info">${c.edits} edits</span>
+        </div>
+      `).join('')
+    : '<p>No appointment edits recorded</p>';
+
+  const avgRevenuePerClient = Object.keys(clientStats).length > 0
+    ? totalRevenue / Object.keys(clientStats).length
+    : 0;
+  document.getElementById('statAvgRevenuePerClient').textContent = `€${avgRevenuePerClient.toFixed(2)}`;
+
+  const firstTimeClients = Object.values(clientStats).filter(c => c.appointments === 1).length;
+  const returningClients = Object.values(clientStats).filter(c => c.appointments > 1).length;
+  document.getElementById('statNewVsReturning').innerHTML = `
+    <div class="new-returning-stats">
+      <div class="nr-stat">
+        <span class="nr-value">${firstTimeClients}</span>
+        <span class="nr-label">New Clients</span>
+      </div>
+      <div class="nr-stat">
+        <span class="nr-value">${returningClients}</span>
+        <span class="nr-label">Returning</span>
+      </div>
+    </div>
+  `;
+
+  const clientLifetimeValue = Object.values(clientStats)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+  
+  document.getElementById('statLifetimeValue').innerHTML = clientLifetimeValue.map((c, i) => `
+    <div class="stat-item">
+      <span class="rank">#${i + 1}</span>
+      <span class="name">${c.name}</span>
+      <span class="value">€${c.revenue.toFixed(2)}</span>
+    </div>
+  `).join('') || '<p>No data</p>';
   
   const serviceStats = {};
   filteredAppointments.forEach(apt => {

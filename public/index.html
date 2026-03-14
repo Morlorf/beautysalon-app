@@ -8,6 +8,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Beauty Salon Manager</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon-192.svg">
+  <link rel="apple-touch-icon" href="icon-192.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -190,21 +192,51 @@
             <h3>Completion Rate</h3>
             <p class="stat-value" id="statCompletionRate">0%</p>
           </div>
+          <div class="stat-card">
+            <h3>Avg Revenue/Client</h3>
+            <p class="stat-value" id="statAvgRevenuePerClient">€0.00</p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stats-section half-width">
+            <h3>Top Clients by Revenue</h3>
+            <div id="statTopClients" class="stats-list"></div>
+          </div>
+
+          <div class="stats-section half-width">
+            <h3>Client Lifetime Value</h3>
+            <div id="statLifetimeValue" class="stats-list"></div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stats-section half-width">
+            <h3>Most Frequent Clients</h3>
+            <div id="statFrequentClients" class="stats-list"></div>
+          </div>
+
+          <div class="stats-section half-width">
+            <h3>New vs Returning Clients</h3>
+            <div id="statNewVsReturning" class="stats-list"></div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stats-section half-width">
+            <h3>Most Reliable Clients (Low Cancellations)</h3>
+            <div id="statStability" class="stats-list"></div>
+          </div>
+
+          <div class="stats-section half-width">
+            <h3>Clients Who Cancel Most</h3>
+            <div id="statCancellationLeaders" class="stats-list"></div>
+          </div>
         </div>
 
         <div class="stats-section">
-          <h3>Top Clients by Revenue</h3>
-          <div id="statTopClients" class="stats-list"></div>
-        </div>
-
-        <div class="stats-section">
-          <h3>Most Frequent Clients</h3>
-          <div id="statFrequentClients" class="stats-list"></div>
-        </div>
-
-        <div class="stats-section">
-          <h3>Client Stability (Low Cancellations = Best)</h3>
-          <div id="statStability" class="stats-list"></div>
+          <h3>Clients Who Reschedule/Edit Most</h3>
+          <div id="statEditLeaders" class="stats-list"></div>
         </div>
 
         <div class="stats-section">

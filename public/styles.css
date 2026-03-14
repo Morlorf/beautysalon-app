@@ -320,9 +320,50 @@ main {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
+}
+
+.stats-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stats-row .half-width {
+  flex: 1;
+}
+
+.stat-item .value.warning {
+  color: #e74c3c;
+}
+
+.stat-item .value.info {
+  color: #3498db;
+}
+
+.new-returning-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.nr-stat {
+  text-align: center;
+}
+
+.nr-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #c44569;
+}
+
+.nr-label {
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .stat-card {
@@ -472,5 +513,13 @@ main {
 
   .cards-container {
     grid-template-columns: 1fr;
+  }
+
+  .stats-row {
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
