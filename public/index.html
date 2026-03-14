@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#ff6b9d">
+  <meta name="theme-color" content="#e91e63">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Beauty Salon Manager</title>
@@ -11,62 +11,83 @@
   <link rel="icon" type="image/svg+xml" href="icon-192.svg">
   <link rel="apple-touch-icon" href="icon-192.svg">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>Beauty Salon Manager</h1>
+    <div class="header-content">
+      <h1>Beauty Salon</h1>
+      <p class="subtitle">Gestione Clienti</p>
+    </div>
     <nav>
-      <button class="nav-btn active" data-tab="clients">Clients</button>
-      <button class="nav-btn" data-tab="services">Services</button>
-      <button class="nav-btn" data-tab="appointments">Appointments</button>
-      <button class="nav-btn" data-tab="statistics">Statistics</button>
+      <button class="nav-btn active" data-tab="clients">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        Clienti
+      </button>
+      <button class="nav-btn" data-tab="services">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.61 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+        Servizi
+      </button>
+      <button class="nav-btn" data-tab="appointments">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+        Appuntamenti
+      </button>
+      <button class="nav-btn" data-tab="statistics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+        Statistiche
+      </button>
     </nav>
   </header>
 
   <main>
     <section id="clients" class="tab-content active">
       <div class="section-header">
-        <h2>Clients</h2>
-        <button class="add-btn" onclick="showClientForm()">+ Add Client</button>
+        <h2>Clienti</h2>
+        <button class="add-btn" onclick="showClientForm()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Nuovo Cliente
+        </button>
       </div>
       
       <div id="clientForm" class="form-modal hidden">
         <div class="form-content">
           <span class="close" onclick="hideClientForm()">&times;</span>
-          <h3 id="clientFormTitle">Add New Client</h3>
+          <h3 id="clientFormTitle">Nuovo Cliente</h3>
           <form id="clientFormData">
             <input type="hidden" id="clientId">
             <div class="form-group">
-              <label>Name *</label>
+              <label>Nome *</label>
               <input type="text" id="clientName" required>
             </div>
             
             <div class="form-group">
-              <label>Phone Numbers</label>
+              <label>Numeri di Telefono</label>
               <div id="phoneFieldsContainer"></div>
-              <button type="button" class="add-field-btn" onclick="addPhoneField()">+ Add Phone</button>
+              <button type="button" class="add-field-btn" onclick="addPhoneField()">+ Aggiungi Telefono</button>
             </div>
             
             <div class="optional-fields-toggle">
-              <button type="button" class="toggle-btn" onclick="toggleOptionalFields()">▼ More Fields</button>
+              <button type="button" class="toggle-btn" onclick="toggleOptionalFields()">▼ Altri Campi</button>
             </div>
             
             <div id="optionalFields" class="optional-fields hidden">
               <div class="form-group">
-                <label>Address</label>
+                <label>Indirizzo</label>
                 <input type="text" id="clientAddress">
               </div>
               <div class="form-group">
-                <label>Birthday</label>
+                <label>Compleanno</label>
                 <input type="date" id="clientBirthday">
               </div>
               <div class="form-group">
-                <label>Notes</label>
+                <label>Note</label>
                 <textarea id="clientNotes"></textarea>
               </div>
             </div>
             
-            <button type="submit" class="submit-btn">Save</button>
+            <button type="submit" class="submit-btn">Salva</button>
           </form>
         </div>
       </div>
@@ -76,33 +97,36 @@
 
     <section id="services" class="tab-content">
       <div class="section-header">
-        <h2>Services</h2>
-        <button class="add-btn" onclick="showServiceForm()">+ Add Service</button>
+        <h2>Servizi</h2>
+        <button class="add-btn" onclick="showServiceForm()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Nuovo Servizio
+        </button>
       </div>
 
       <div id="serviceForm" class="form-modal hidden">
         <div class="form-content">
           <span class="close" onclick="hideServiceForm()">&times;</span>
-          <h3 id="serviceFormTitle">Add New Service</h3>
+          <h3 id="serviceFormTitle">Nuovo Servizio</h3>
           <form id="serviceFormData">
             <input type="hidden" id="serviceId">
             <div class="form-group">
-              <label>Name</label>
+              <label>Nome</label>
               <input type="text" id="serviceName" required>
             </div>
             <div class="form-group">
-              <label>Description</label>
+              <label>Descrizione</label>
               <textarea id="serviceDescription"></textarea>
             </div>
             <div class="form-group">
-              <label>Duration (minutes)</label>
+              <label>Durata (minuti)</label>
               <input type="number" id="serviceDuration" required>
             </div>
               <div class="form-group">
-              <label>Price (€)</label>
+              <label>Prezzo (€)</label>
               <input type="number" id="servicePrice" step="0.01" required>
             </div>
-            <button type="submit" class="submit-btn">Save</button>
+            <button type="submit" class="submit-btn">Salva</button>
           </form>
         </div>
       </div>
@@ -112,50 +136,53 @@
 
     <section id="appointments" class="tab-content">
       <div class="section-header">
-        <h2>Appointments</h2>
-        <button class="add-btn" onclick="showAppointmentForm()">+ New Appointment</button>
+        <h2>Appuntamenti</h2>
+        <button class="add-btn" onclick="showAppointmentForm()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Nuovo Appuntamento
+        </button>
       </div>
 
       <div id="appointmentForm" class="form-modal hidden">
         <div class="form-content">
           <span class="close" onclick="hideAppointmentForm()">&times;</span>
-          <h3 id="appointmentFormTitle">New Appointment</h3>
+          <h3 id="appointmentFormTitle">Nuovo Appuntamento</h3>
           <form id="appointmentFormData">
             <input type="hidden" id="appointmentId">
             <div class="form-group">
-              <label>Client</label>
+              <label>Cliente</label>
               <select id="appointmentClient" required></select>
             </div>
             <div class="form-group">
-              <label>Service</label>
+              <label>Servizio</label>
               <select id="appointmentService" required></select>
             </div>
             <div class="form-group">
-              <label>Date</label>
+              <label>Data e Ora</label>
               <input type="datetime-local" id="appointmentDate" required>
             </div>
             <div class="form-group">
-              <label>Price (€)</label>
+              <label>Prezzo (€)</label>
               <input type="number" id="appointmentPrice" step="0.01" required>
             </div>
             <div class="form-group">
-              <label>Discount (€)</label>
+              <label>Sconto (€)</label>
               <input type="number" id="appointmentDiscount" step="0.01" value="0">
             </div>
             <div class="form-group">
-              <label>Status</label>
+              <label>Stato</label>
               <select id="appointmentStatus">
-                <option value="scheduled">Scheduled</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="no-show">No Show</option>
+                <option value="scheduled">Programmato</option>
+                <option value="completed">Completato</option>
+                <option value="cancelled">Cancellato</option>
+                <option value="no-show">Non Presentato</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Notes</label>
+              <label>Note</label>
               <textarea id="appointmentNotes"></textarea>
             </div>
-            <button type="submit" class="submit-btn">Save</button>
+            <button type="submit" class="submit-btn">Salva</button>
           </form>
         </div>
       </div>
@@ -165,92 +192,137 @@
 
     <section id="statistics" class="tab-content">
       <div class="section-header">
-        <h2>Statistics</h2>
+        <h2>Statistiche</h2>
         <select id="statsPeriod" class="period-select" onchange="loadStatistics()">
-          <option value="all">All Time</option>
-          <option value="30">Last 30 Days</option>
-          <option value="180">Last 6 Months</option>
-          <option value="365">Last 1 Year</option>
+          <option value="all">Tutto il Tempo</option>
+          <option value="30">Ultimi 30 Giorni</option>
+          <option value="180">Ultimi 6 Mesi</option>
+          <option value="365">Ultimo Anno</option>
         </select>
       </div>
 
       <div id="statsContent">
         <div class="stats-grid">
           <div class="stat-card">
-            <h3>Total Revenue</h3>
-            <p class="stat-value" id="statTotalRevenue">€0.00</p>
+            <div class="stat-icon revenue">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+            </div>
+            <h3>Incasso Totale</h3>
+            <p class="stat-value" id="statTotalRevenue">€0,00</p>
           </div>
           <div class="stat-card">
-            <h3>Total Appointments</h3>
+            <div class="stat-icon appointments">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+            </div>
+            <h3>Appuntamenti</h3>
             <p class="stat-value" id="statTotalAppointments">0</p>
           </div>
           <div class="stat-card">
-            <h3>Total Clients</h3>
+            <div class="stat-icon clients">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <h3>Clienti</h3>
             <p class="stat-value" id="statTotalClients">0</p>
           </div>
           <div class="stat-card">
-            <h3>Completion Rate</h3>
+            <div class="stat-icon rate">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM10 17l-3.5-3.5 1.41-1.41L10 14.17l4.59-4.59L16 11l-6 6z"/></svg>
+            </div>
+            <h3>Tasso Completamento</h3>
             <p class="stat-value" id="statCompletionRate">0%</p>
           </div>
           <div class="stat-card">
-            <h3>Avg Revenue/Client</h3>
-            <p class="stat-value" id="statAvgRevenuePerClient">€0.00</p>
+            <div class="stat-icon avg">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            </div>
+            <h3>Incasso Medio/Cliente</h3>
+            <p class="stat-value" id="statAvgRevenuePerClient">€0,00</p>
           </div>
         </div>
 
         <div class="stats-row">
           <div class="stats-section half-width">
-            <h3>Top Clients by Revenue</h3>
+            <div class="section-icon top-clients">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            </div>
+            <h3>Clienti più Redditizi</h3>
             <div id="statTopClients" class="stats-list"></div>
           </div>
 
           <div class="stats-section half-width">
-            <h3>Client Lifetime Value</h3>
+            <div class="section-icon lifetime">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3>Valore nel Tempo</h3>
             <div id="statLifetimeValue" class="stats-list"></div>
           </div>
         </div>
 
         <div class="stats-row">
           <div class="stats-section half-width">
-            <h3>Most Frequent Clients</h3>
+            <div class="section-icon frequent">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+            </div>
+            <h3>Clienti Più Frequenti</h3>
             <div id="statFrequentClients" class="stats-list"></div>
           </div>
 
           <div class="stats-section half-width">
-            <h3>New vs Returning Clients</h3>
+            <div class="section-icon retention">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <h3>Nuovi vs Fedeli</h3>
             <div id="statNewVsReturning" class="stats-list"></div>
           </div>
         </div>
 
         <div class="stats-row">
           <div class="stats-section half-width">
-            <h3>Most Reliable Clients (Low Cancellations)</h3>
+            <div class="section-icon reliable">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <h3>Clienti Più Affidabili</h3>
             <div id="statStability" class="stats-list"></div>
           </div>
 
           <div class="stats-section half-width">
-            <h3>Clients Who Cancel Most</h3>
+            <div class="section-icon cancel">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
+            </div>
+            <h3>Clienti che Cancellano</h3>
             <div id="statCancellationLeaders" class="stats-list"></div>
           </div>
         </div>
 
         <div class="stats-section">
-          <h3>Clients Who Reschedule/Edit Most</h3>
+          <div class="section-icon edits">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </div>
+          <h3>Clienti che Modificano</h3>
           <div id="statEditLeaders" class="stats-list"></div>
         </div>
 
         <div class="stats-section">
-          <h3>Most Popular Services</h3>
+          <div class="section-icon services">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+          </div>
+          <h3>Servizi Più Richiesti</h3>
           <div id="statPopularServices" class="stats-list"></div>
         </div>
 
         <div class="stats-section">
-          <h3>Monthly Revenue</h3>
+          <div class="section-icon chart">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+          </div>
+          <h3>Incasso Mensile</h3>
           <div id="statMonthlyRevenue" class="stats-chart"></div>
         </div>
 
         <div class="stats-section">
-          <h3>Upcoming Birthdays</h3>
+          <div class="section-icon birthday">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+          </div>
+          <h3>Compleanni Prossimi</h3>
           <div id="statBirthdays" class="stats-list"></div>
         </div>
       </div>

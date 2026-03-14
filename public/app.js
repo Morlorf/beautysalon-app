@@ -78,8 +78,8 @@ const API = {
         const service = services.find(s => s._id === apt.service);
         return {
           ...apt,
-          clientName: client ? client.name : 'Unknown Client',
-          serviceName: service ? service.name : 'Unknown Service'
+          clientName: client ? client.name : 'Cliente Sconosciuto',
+          serviceName: service ? service.name : 'Servizio Sconosciuto'
         };
       });
     },
@@ -92,8 +92,8 @@ const API = {
         const service = services.find(s => s._id === apt.service);
         return {
           ...apt,
-          clientName: client ? client.name : 'Unknown Client',
-          serviceName: service ? service.name : 'Unknown Service'
+          clientName: client ? client.name : 'Cliente Sconosciuto',
+          serviceName: service ? service.name : 'Servizio Sconosciuto'
         };
       }
       return apt;
@@ -186,7 +186,7 @@ function loadClients() {
     renderClients(clients);
   } catch (error) {
     console.error('Error loading clients:', error);
-    document.getElementById('clientsList').innerHTML = '<div class="empty-state">Error loading clients.</div>';
+    document.getElementById('clientsList').innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><p>Errore nel caricamento dei clienti.</p></div>';
   }
 }
 
@@ -194,7 +194,7 @@ function renderClients(clients) {
   const container = document.getElementById('clientsList');
   
   if (clients.length === 0) {
-    container.innerHTML = '<div class="empty-state">No clients yet. Add your first client!</div>';
+    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><p>Nessun cliente ancora. Aggiungi il tuo primo cliente!</p></div>';
     return;
   }
   
@@ -205,20 +205,20 @@ function renderClients(clients) {
     return `
       <div class="card">
         <h3>${client.name}</h3>
-        ${phoneHtml || '<p><em>No phone</em></p>'}
+        ${phoneHtml || '<p><em>Nessun telefono</em></p>'}
         ${client.address ? `<p>${client.address}</p>` : ''}
-        ${client.birthday ? `<p>Birthday: ${new Date(client.birthday).toLocaleDateString()}</p>` : ''}
+        ${client.birthday ? `<p>Compleanno: ${new Date(client.birthday).toLocaleDateString('it-IT')}</p>` : ''}
         ${client.notes ? `<p><em>${client.notes}</em></p>` : ''}
         <div class="card-actions">
-          <button class="edit-btn" onclick="editClient('${client._id}')">Edit</button>
-          <button class="delete-btn" onclick="deleteClient('${client._id}')">Delete</button>
+          <button class="edit-btn" onclick="editClient('${client._id}')">Modifica</button>
+          <button class="delete-btn" onclick="deleteClient('${client._id}')">Elimina</button>
         </div>
       </div>
     `;
   }).join('');
 }
 
-const PHONE_LABELS = ['Mobile', 'Home', 'Work', 'Father', 'Mother', 'Partner', 'Other'];
+const PHONE_LABELS = ['Mobile', 'Casa', 'Lavoro', 'Padre', 'Madre', 'Partner', 'Altro'];
 
 function addPhoneField(label = 'Mobile', number = '') {
   const container = document.getElementById('phoneFieldsContainer');
@@ -231,7 +231,7 @@ function addPhoneField(label = 'Mobile', number = '') {
   const fieldHtml = `
     <div class="phone-field" id="phone-${fieldId}">
       <select class="phone-label">${labelOptions}</select>
-      <input type="text" class="phone-number" placeholder="Phone number" value="${number}">
+      <input type="text" class="phone-number" placeholder="Numero di telefono" value="${number}">
       <button type="button" class="remove-field" onclick="removePhoneField('phone-${fieldId}')">&times;</button>
     </div>
   `;
@@ -252,10 +252,10 @@ function toggleOptionalFields() {
   
   if (optionalFields.classList.contains('hidden')) {
     optionalFields.classList.remove('hidden');
-    toggleBtn.textContent = '▲ Less Fields';
+    toggleBtn.textContent = '▲ Meno Campi';
   } else {
     optionalFields.classList.add('hidden');
-    toggleBtn.textContent = '▼ More Fields';
+    toggleBtn.textContent = '▼ Altri Campi';
   }
 }
 
@@ -268,10 +268,10 @@ function showClientForm(client = null) {
   document.getElementById('clientId').value = '';
   document.getElementById('phoneFieldsContainer').innerHTML = '';
   document.getElementById('optionalFields').classList.add('hidden');
-  document.querySelector('.toggle-btn').textContent = '▼ More Fields';
+  document.querySelector('.toggle-btn').textContent = '▼ Altri Campi';
   
   if (client) {
-    title.textContent = 'Edit Client';
+    title.textContent = 'Modifica Cliente';
     document.getElementById('clientId').value = client._id;
     document.getElementById('clientName').value = client.name;
     
@@ -286,7 +286,7 @@ function showClientForm(client = null) {
     document.getElementById('clientBirthday').value = client.birthday ? client.birthday.split('T')[0] : '';
     document.getElementById('clientNotes').value = client.notes || '';
   } else {
-    title.textContent = 'Add New Client';
+    title.textContent = 'Nuovo Cliente';
     addPhoneField('Mobile', '');
   }
   
@@ -342,13 +342,13 @@ function editClient(id) {
 }
 
 function deleteClient(id) {
-  if (!confirm('Are you sure you want to delete this client?')) return;
+  if (!confirm('Sei sicuro di voler eliminare questo cliente?')) return;
   
   try {
     API.clients.delete(id);
     loadClients();
   } catch (error) {
-    console.error('Error deleting client:', error);
+    console.error('Errore eliminazione cliente:', error);
   }
 }
 
@@ -357,8 +357,8 @@ function loadServices() {
     const services = API.services.getAll();
     renderServices(services);
   } catch (error) {
-    console.error('Error loading services:', error);
-    document.getElementById('servicesList').innerHTML = '<div class="empty-state">Error loading services.</div>';
+    console.error('Errore caricamento servizi:', error);
+    document.getElementById('servicesList').innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg><p>Errore nel caricamento dei servizi.</p></div>';
   }
 }
 
@@ -366,7 +366,7 @@ function renderServices(services) {
   const container = document.getElementById('servicesList');
   
   if (services.length === 0) {
-    container.innerHTML = '<div class="empty-state">No services yet. Add your first service!</div>';
+    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg><p>Nessun servizio ancora. Aggiungi il tuo primo servizio!</p></div>';
     return;
   }
   
@@ -374,11 +374,11 @@ function renderServices(services) {
     <div class="card">
       <h3>${service.name}</h3>
       ${service.description ? `<p>${service.description}</p>` : ''}
-      <p>Duration: ${service.duration} minutes</p>
-      <p class="price">€${(service.basePrice || 0).toFixed(2)}</p>
+      <p>Durata: ${service.duration} minuti</p>
+      <p class="price">€${(service.basePrice || 0).toFixed(2).replace('.', ',')}</p>
       <div class="card-actions">
-        <button class="edit-btn" onclick="editService('${service._id}')">Edit</button>
-        <button class="delete-btn" onclick="deleteService('${service._id}')">Delete</button>
+        <button class="edit-btn" onclick="editService('${service._id}')">Modifica</button>
+        <button class="delete-btn" onclick="deleteService('${service._id}')">Elimina</button>
       </div>
     </div>
   `).join('');
@@ -393,14 +393,14 @@ function showServiceForm(service = null) {
   document.getElementById('serviceId').value = '';
   
   if (service) {
-    title.textContent = 'Edit Service';
+    title.textContent = 'Modifica Servizio';
     document.getElementById('serviceId').value = service._id;
     document.getElementById('serviceName').value = service.name;
     document.getElementById('serviceDescription').value = service.description || '';
     document.getElementById('serviceDuration').value = service.duration;
     document.getElementById('servicePrice').value = service.basePrice;
   } else {
-    title.textContent = 'Add New Service';
+    title.textContent = 'Nuovo Servizio';
   }
   
   form.classList.remove('hidden');
@@ -431,7 +431,7 @@ document.getElementById('serviceFormData').addEventListener('submit', async (e) 
     hideServiceForm();
     loadServices();
   } catch (error) {
-    console.error('Error saving service:', error);
+    console.error('Errore salvataggio servizio:', error);
   }
 });
 
@@ -443,13 +443,13 @@ function editService(id) {
 }
 
 function deleteService(id) {
-  if (!confirm('Are you sure you want to delete this service?')) return;
+  if (!confirm('Sei sicuro di voler eliminare questo servizio?')) return;
   
   try {
     API.services.delete(id);
     loadServices();
   } catch (error) {
-    console.error('Error deleting service:', error);
+    console.error('Errore eliminazione servizio:', error);
   }
 }
 
@@ -458,8 +458,8 @@ function loadAppointments() {
     const appointments = API.appointments.getAll();
     renderAppointments(appointments);
   } catch (error) {
-    console.error('Error loading appointments:', error);
-    document.getElementById('appointmentsList').innerHTML = '<div class="empty-state">Error loading appointments.</div>';
+    console.error('Errore caricamento appuntamenti:', error);
+    document.getElementById('appointmentsList').innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg><p>Errore nel caricamento degli appuntamenti.</p></div>';
   }
 }
 
@@ -467,11 +467,18 @@ function renderAppointments(appointments) {
   const container = document.getElementById('appointmentsList');
   
   if (appointments.length === 0) {
-    container.innerHTML = '<div class="empty-state">No appointments yet. Schedule your first appointment!</div>';
+    container.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg><p>Nessun appuntamento ancora. Pianifica il tuo primo appuntamento!</p></div>';
     return;
   }
   
   const sortedAppointments = [...appointments].sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  const statusLabels = {
+    scheduled: 'Programmato',
+    completed: 'Completato',
+    cancelled: 'Cancellato',
+    'no-show': 'Non Presentato'
+  };
   
   container.innerHTML = sortedAppointments.map(apt => {
     const total = (apt.price || 0) - (apt.discount || 0);
@@ -479,15 +486,15 @@ function renderAppointments(appointments) {
     return `
       <div class="card">
         <h3>${apt.clientName}</h3>
-        <p>Service: ${apt.serviceName}</p>
-        <p>Date: ${new Date(apt.date).toLocaleString()}</p>
-        <p>Price: €${(apt.price || 0).toFixed(2)} ${(apt.discount || 0) > 0 ? `(Discount: €${apt.discount.toFixed(2)})` : ''}</p>
-        <p class="price">Total: €${total.toFixed(2)}</p>
-        <span class="status ${apt.status}">${apt.status}</span>
+        <p>Servizio: ${apt.serviceName}</p>
+        <p>Data: ${new Date(apt.date).toLocaleString('it-IT')}</p>
+        <p>Prezzo: €${(apt.price || 0).toFixed(2).replace('.', ',')} ${(apt.discount || 0) > 0 ? `(Sconto: €${apt.discount.toFixed(2).replace('.', ',')})` : ''}</p>
+        <p class="price">Totale: €${total.toFixed(2).replace('.', ',')}</p>
+        <span class="status ${apt.status}">${statusLabels[apt.status] || apt.status}</span>
         ${apt.notes ? `<p><em>${apt.notes}</em></p>` : ''}
         <div class="card-actions">
-          <button class="edit-btn" onclick="editAppointment('${apt._id}')">Edit</button>
-          <button class="delete-btn" onclick="deleteAppointment('${apt._id}')">Delete</button>
+          <button class="edit-btn" onclick="editAppointment('${apt._id}')">Modifica</button>
+          <button class="delete-btn" onclick="deleteAppointment('${apt._id}')">Elimina</button>
         </div>
       </div>
     `;
@@ -502,7 +509,7 @@ function showAppointmentForm(appointment = null) {
   const serviceSelect = document.getElementById('appointmentService');
   
   clientSelect.innerHTML = clients.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
-  serviceSelect.innerHTML = services.map(s => `<option value="${s._id}" data-price="${s.basePrice}">${s.name} - €${(s.basePrice || 0).toFixed(2)}</option>`).join('');
+  serviceSelect.innerHTML = services.map(s => `<option value="${s._id}" data-price="${s.basePrice}">${s.name} - €${(s.basePrice || 0).toFixed(2).replace('.', ',')}</option>`).join('');
   
   const form = document.getElementById('appointmentForm');
   const title = document.getElementById('appointmentFormTitle');
@@ -514,12 +521,12 @@ function showAppointmentForm(appointment = null) {
   document.getElementById('appointmentStatus').value = 'scheduled';
   
   if (clients.length === 0 || services.length === 0) {
-    alert('Please add clients and services first before creating an appointment.');
+    alert('Per favore aggiungi prima clienti e servizi prima di creare un appuntamento.');
     return;
   }
   
   if (appointment) {
-    title.textContent = 'Edit Appointment';
+    title.textContent = 'Modifica Appuntamento';
     document.getElementById('appointmentId').value = appointment._id;
     document.getElementById('appointmentClient').value = appointment.client;
     document.getElementById('appointmentService').value = appointment.service;
@@ -529,7 +536,7 @@ function showAppointmentForm(appointment = null) {
     document.getElementById('appointmentStatus').value = appointment.status;
     document.getElementById('appointmentNotes').value = appointment.notes || '';
   } else {
-    title.textContent = 'New Appointment';
+    title.textContent = 'Nuovo Appuntamento';
   }
   
   form.classList.remove('hidden');
@@ -549,8 +556,8 @@ function updateDiscountSuggestion() {
   if (suggestion) {
     suggestionHtml = `
       <div class="discount-suggestion">
-        <p>💡 Based on ${suggestion.totalAppointments} past appointments, you usually give <strong>€${suggestion.avgDiscount.toFixed(2)}</strong> discount</p>
-        <button type="button" class="suggestion-btn" onclick="applyDiscount(${suggestion.avgDiscount})">Apply €${suggestion.avgDiscount.toFixed(2)}</button>
+        <p>💡 In base a ${suggestion.totalAppointments} appuntamenti passati, di solito applichi uno sconto di <strong>€${suggestion.avgDiscount.toFixed(2).replace('.', ',')}</strong></p>
+        <button type="button" class="suggestion-btn" onclick="applyDiscount(${suggestion.avgDiscount})">Applica €${suggestion.avgDiscount.toFixed(2).replace('.', ',')}</button>
       </div>
     `;
   }
@@ -603,7 +610,7 @@ document.getElementById('appointmentFormData').addEventListener('submit', async 
     hideAppointmentForm();
     loadAppointments();
   } catch (error) {
-    console.error('Error saving appointment:', error);
+    console.error('Errore salvataggio appuntamento:', error);
   }
 });
 
@@ -615,13 +622,13 @@ function editAppointment(id) {
 }
 
 function deleteAppointment(id) {
-  if (!confirm('Are you sure you want to delete this appointment?')) return;
+  if (!confirm('Sei sicuro di voler eliminare questo appuntamento?')) return;
   
   try {
     API.appointments.delete(id);
     loadAppointments();
   } catch (error) {
-    console.error('Error deleting appointment:', error);
+    console.error('Errore eliminazione appuntamento:', error);
   }
 }
 
@@ -643,7 +650,7 @@ function loadStatistics() {
   const completedAppointments = filteredAppointments.filter(a => a.status === 'completed');
   const totalRevenue = completedAppointments.reduce((sum, a) => sum + (a.price - a.discount), 0);
   
-  document.getElementById('statTotalRevenue').textContent = `€${totalRevenue.toFixed(2)}`;
+  document.getElementById('statTotalRevenue').textContent = `€${totalRevenue.toFixed(2).replace('.', ',')}`;
   document.getElementById('statTotalAppointments').textContent = filteredAppointments.length;
   document.getElementById('statTotalClients').textContent = clients.length;
   
@@ -684,9 +691,9 @@ function loadStatistics() {
     <div class="stat-item">
       <span class="rank">#${i + 1}</span>
       <span class="name">${c.name}</span>
-      <span class="value">€${c.revenue.toFixed(2)}</span>
+      <span class="value">€${c.revenue.toFixed(2).replace('.', ',')}</span>
     </div>
-  `).join('') || '<p>No data</p>';
+  `).join('') || '<p>Nessun dato</p>';
   
   const frequentClients = Object.values(clientStats)
     .sort((a, b) => b.appointments - a.appointments)
@@ -696,9 +703,9 @@ function loadStatistics() {
     <div class="stat-item">
       <span class="rank">#${i + 1}</span>
       <span class="name">${c.name}</span>
-      <span class="value">${c.appointments} visits</span>
+      <span class="value">${c.appointments} visite</span>
     </div>
-  `).join('') || '<p>No data</p>';
+  `).join('') || '<p>Nessun dato</p>';
   
   const stabilityClients = Object.values(clientStats)
     .filter(c => c.appointments >= 2)
@@ -713,9 +720,9 @@ function loadStatistics() {
     <div class="stat-item">
       <span class="rank">#${i + 1}</span>
       <span class="name">${c.name}</span>
-      <span class="value">${c.stability.toFixed(0)}% completed</span>
+      <span class="value">${c.stability.toFixed(0)}% completati</span>
     </div>
-  `).join('') || '<p>Need at least 2 appointments to calculate stability</p>';
+  `).join('') || '<p>Servono almeno 2 appuntamenti per calcolare</p>';
 
   const cancellationLeaders = Object.values(clientStats)
     .filter(c => c.cancelled > 0)
@@ -734,7 +741,7 @@ function loadStatistics() {
           <span class="value warning">${c.cancelled} (${c.cancelRate.toFixed(0)}%)</span>
         </div>
       `).join('')
-    : '<p>No cancellations recorded</p>';
+    : '<p>Nessuna cancellazione registrata</p>';
 
   const editLeaders = Object.values(clientStats)
     .filter(c => c.edits > 0)
@@ -746,15 +753,15 @@ function loadStatistics() {
         <div class="stat-item">
           <span class="rank">#${i + 1}</span>
           <span class="name">${c.name}</span>
-          <span class="value info">${c.edits} edits</span>
+          <span class="value info">${c.edits} modifiche</span>
         </div>
       `).join('')
-    : '<p>No appointment edits recorded</p>';
+    : '<p>Nessuna modifica registrata</p>';
 
   const avgRevenuePerClient = Object.keys(clientStats).length > 0
     ? totalRevenue / Object.keys(clientStats).length
     : 0;
-  document.getElementById('statAvgRevenuePerClient').textContent = `€${avgRevenuePerClient.toFixed(2)}`;
+  document.getElementById('statAvgRevenuePerClient').textContent = `€${avgRevenuePerClient.toFixed(2).replace('.', ',')}`;
 
   const firstTimeClients = Object.values(clientStats).filter(c => c.appointments === 1).length;
   const returningClients = Object.values(clientStats).filter(c => c.appointments > 1).length;
@@ -762,11 +769,11 @@ function loadStatistics() {
     <div class="new-returning-stats">
       <div class="nr-stat">
         <span class="nr-value">${firstTimeClients}</span>
-        <span class="nr-label">New Clients</span>
+        <span class="nr-label">Nuovi Clienti</span>
       </div>
       <div class="nr-stat">
         <span class="nr-value">${returningClients}</span>
-        <span class="nr-label">Returning</span>
+        <span class="nr-label">Fedeli</span>
       </div>
     </div>
   `;
@@ -779,9 +786,9 @@ function loadStatistics() {
     <div class="stat-item">
       <span class="rank">#${i + 1}</span>
       <span class="name">${c.name}</span>
-      <span class="value">€${c.revenue.toFixed(2)}</span>
+      <span class="value">€${c.revenue.toFixed(2).replace('.', ',')}</span>
     </div>
-  `).join('') || '<p>No data</p>';
+  `).join('') || '<p>Nessun dato</p>';
   
   const serviceStats = {};
   filteredAppointments.forEach(apt => {
@@ -805,9 +812,9 @@ function loadStatistics() {
     <div class="stat-item">
       <span class="rank">#${i + 1}</span>
       <span class="name">${s.name}</span>
-      <span class="value">${s.count} x (€${s.revenue.toFixed(2)})</span>
+      <span class="value">${s.count} x (€${s.revenue.toFixed(2).replace('.', ',')})</span>
     </div>
-  `).join('') || '<p>No data</p>';
+  `).join('') || '<p>Nessun dato</p>';
   
   const monthlyRevenue = {};
   completedAppointments.forEach(apt => {
@@ -817,13 +824,17 @@ function loadStatistics() {
   });
   
   const sortedMonths = Object.keys(monthlyRevenue).sort().slice(-6);
-  document.getElementById('statMonthlyRevenue').innerHTML = sortedMonths.map(m => `
-    <div class="chart-bar">
-      <div class="bar" style="height: ${Math.max(10, (monthlyRevenue[m] / Math.max(...Object.values(monthlyRevenue))) * 100)}%"></div>
-      <span class="label">${m}</span>
-      <span class="value">€${monthlyRevenue[m].toFixed(0)}</span>
-    </div>
-  `).join('') || '<p>No data</p>';
+  document.getElementById('statMonthlyRevenue').innerHTML = sortedMonths.map(m => {
+    const [year, month] = m.split('-');
+    const monthNames = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
+    return `
+      <div class="chart-bar">
+        <div class="bar" style="height: ${Math.max(10, (monthlyRevenue[m] / Math.max(...Object.values(monthlyRevenue))) * 100)}%"></div>
+        <span class="label">${monthNames[parseInt(month) - 1]}</span>
+        <span class="value">€${Math.round(monthlyRevenue[m])}</span>
+      </div>
+    `;
+  }).join('') || '<p>Nessun dato</p>';
   
   const today = new Date();
   const thirtyDaysLater = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -844,8 +855,8 @@ function loadStatistics() {
     ? upcomingBirthdays.map(c => `
         <div class="stat-item">
           <span class="name">${c.name}</span>
-          <span class="value">${c.bday.toLocaleDateString()}</span>
+          <span class="value">${c.bday.toLocaleDateString('it-IT')}</span>
         </div>
       `).join('')
-    : '<p>No birthdays in the next 30 days</p>';
+    : '<p>Nessun compleanno nei prossimi 30 giorni</p>';
 }
