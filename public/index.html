@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ff6b9d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Beauty Salon Manager</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Beauty Salon Manager</h1>
+    <nav>
+      <button class="nav-btn active" data-tab="clients">Clients</button>
+      <button class="nav-btn" data-tab="services">Services</button>
+      <button class="nav-btn" data-tab="appointments">Appointments</button>
+      <button class="nav-btn" data-tab="statistics">Statistics</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="clients" class="tab-content active">
+      <div class="section-header">
+        <h2>Clients</h2>
+        <button class="add-btn" onclick="showClientForm()">+ Add Client</button>
+      </div>
+      
+      <div id="clientForm" class="form-modal hidden">
+        <div class="form-content">
+          <span class="close" onclick="hideClientForm()">&times;</span>
+          <h3 id="clientFormTitle">Add New Client</h3>
+          <form id="clientFormData">
+            <input type="hidden" id="clientId">
+            <div class="form-group">
+              <label>Name *</label>
+              <input type="text" id="clientName" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Phone Numbers</label>
+              <div id="phoneFieldsContainer"></div>
+              <button type="button" class="add-field-btn" onclick="addPhoneField()">+ Add Phone</button>
+            </div>
+            
+            <div class="optional-fields-toggle">
+              <button type="button" class="toggle-btn" onclick="toggleOptionalFields()">▼ More Fields</button>
+            </div>
+            
+            <div id="optionalFields" class="optional-fields hidden">
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="clientAddress">
+              </div>
+              <div class="form-group">
+                <label>Birthday</label>
+                <input type="date" id="clientBirthday">
+              </div>
+              <div class="form-group">
+                <label>Notes</label>
+                <textarea id="clientNotes"></textarea>
+              </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Save</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="clientsList" class="cards-container"></div>
+    </section>
+
+    <section id="services" class="tab-content">
+      <div class="section-header">
+        <h2>Services</h2>
+        <button class="add-btn" onclick="showServiceForm()">+ Add Service</button>
+      </div>
+
+      <div id="serviceForm" class="form-modal hidden">
+        <div class="form-content">
+          <span class="close" onclick="hideServiceForm()">&times;</span>
+          <h3 id="serviceFormTitle">Add New Service</h3>
+          <form id="serviceFormData">
+            <input type="hidden" id="serviceId">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" id="serviceName" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="serviceDescription"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Duration (minutes)</label>
+              <input type="number" id="serviceDuration" required>
+            </div>
+              <div class="form-group">
+              <label>Price (€)</label>
+              <input type="number" id="servicePrice" step="0.01" required>
+            </div>
+            <button type="submit" class="submit-btn">Save</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="servicesList" class="cards-container"></div>
+    </section>
+
+    <section id="appointments" class="tab-content">
+      <div class="section-header">
+        <h2>Appointments</h2>
+        <button class="add-btn" onclick="showAppointmentForm()">+ New Appointment</button>
+      </div>
+
+      <div id="appointmentForm" class="form-modal hidden">
+        <div class="form-content">
+          <span class="close" onclick="hideAppointmentForm()">&times;</span>
+          <h3 id="appointmentFormTitle">New Appointment</h3>
+          <form id="appointmentFormData">
+            <input type="hidden" id="appointmentId">
+            <div class="form-group">
+              <label>Client</label>
+              <select id="appointmentClient" required></select>
+            </div>
+            <div class="form-group">
+              <label>Service</label>
+              <select id="appointmentService" required></select>
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="datetime-local" id="appointmentDate" required>
+            </div>
+            <div class="form-group">
+              <label>Price (€)</label>
+              <input type="number" id="appointmentPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label>Discount (€)</label>
+              <input type="number" id="appointmentDiscount" step="0.01" value="0">
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="appointmentStatus">
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="no-show">No Show</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea id="appointmentNotes"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Save</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="appointmentsList" class="cards-container"></div>
+    </section>
+
+    <section id="statistics" class="tab-content">
+      <div class="section-header">
+        <h2>Statistics</h2>
+        <select id="statsPeriod" class="period-select" onchange="loadStatistics()">
+          <option value="all">All Time</option>
+          <option value="30">Last 30 Days</option>
+          <option value="180">Last 6 Months</option>
+          <option value="365">Last 1 Year</option>
+        </select>
+      </div>
+
+      <div id="statsContent">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Total Revenue</h3>
+            <p class="stat-value" id="statTotalRevenue">€0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Total Appointments</h3>
+            <p class="stat-value" id="statTotalAppointments">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Total Clients</h3>
+            <p class="stat-value" id="statTotalClients">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Completion Rate</h3>
+            <p class="stat-value" id="statCompletionRate">0%</p>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Top Clients by Revenue</h3>
+          <div id="statTopClients" class="stats-list"></div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Most Frequent Clients</h3>
+          <div id="statFrequentClients" class="stats-list"></div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Client Stability (Low Cancellations = Best)</h3>
+          <div id="statStability" class="stats-list"></div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Most Popular Services</h3>
+          <div id="statPopularServices" class="stats-list"></div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Monthly Revenue</h3>
+          <div id="statMonthlyRevenue" class="stats-chart"></div>
+        </div>
+
+        <div class="stats-section">
+          <h3>Upcoming Birthdays</h3>
+          <div id="statBirthdays" class="stats-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>
