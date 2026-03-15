@@ -91,7 +91,7 @@ All data is stored in localStorage:
 - `beautysalon_services` - Service records
 - `beautysalon_appointments` - Appointment records
 
-## Known Limitations
+## Known Limitations (some are wanted for simplicity)
 - Data is device-specific (no cloud sync)
 - No user authentication
 - No data export/import functionality yet
